@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>6.vue中多个元素/组件的切换动画</title>
+    <script src="../package/vue.js"></script>
+    <style>
+        .fade-enter, .fade-leave-to {
+            opacity: 0;
+        }
+        .fade-enter-active, .fade-leave-active {
+            transition: opacity 3s;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- 给要加入动画效果的节点包裹上一个transition标签 -->
+        <!-- mode="out-in"表示切换两个元素时先消失旧的，再创建新的 -->
+        <transition name="fade" mode="out-in">
+            <!-- 一、多个元素的切换动画 -->
+            <!-- 由于每次点击切换时会在内存中重新创建新的DOM，所以反复切换资源开销较大，
+            而且这样也会使得作用的css动画无效，解决办法即防止每次都重新创建新节点的方法，有两个
+            1）在每个元素上加一个v-once表示该节点在内存只创建一次，在内存中有保留
+            2）给每个元素一个独一无二的key值，这样也能使得元素节点不会反复创建 -->
+    <!--    <p v-if="flag" key="elOne">我是元素1</p>
+            <p v-else key="elTwo">我是元素2</p>       -->
+
+            <!-- 二、多个组件的切换动画 -->
+            <component :is="comName"></component>
+        </transition>
+        <!-- <button @click="switchAnim">点我切换显示元素</button> -->
+        <button @click="switchAnim">点我切换组件</button>
+    </div>
+
+    <script>
+        // 组件1
+        Vue.component("com1", {
+            template: `
+                <p>我是组件1</p>
+            `,
+
+        }),
+        // 组件2
+        Vue.component("com2", {
+            template: `
+                <p>我是组件2</p>
+            `,
+        });
+
+        // vue实例
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                // flag: true
+                comName: "com1"
+            },
+            methods: {
+                // switchAnim() {
+                //     this.flag = !this.flag;
+                // }
+                switchAnim() {
+                    this.comName = (this.comName === "com1" ? "com2" : "com1");
+                }
+            }
+        })
+    </script>
+</body>
+</html>
+
+<!-- 
+    笔记：
+    一、元素的切换动画
+1、在两个元素的切换上利用css在各帧提供的class，给切换效果加上一个切换的动态效果
+2、注意要保证切换过程中两个元素不被反复创建和销毁，从而使得作用的动画效果有效，
+所以需要保证元素节点的唯一性，有两种方法，一是给每个元素标签加上一个v-once指令，
+二是给每个元素这是唯一的key值
+3、给transition标签添加一个mode="out-in/in-out"可以设置切换的元素的进出顺序
+
+    二、组件的切换动画
+1、多个组件的切换有两种方式，1是多个组件的标签上向多个元素那样，也写上v-if、v-else进行选择
+2是写成动态组件的方式，利用vue提供的component标签，利用:is="组件名变量"，通过点击事件绑定的函数来修改组件名以实现组件的切换
+2、将一、的元素切换代码的元素部分换成在1、的组件部分，css样式不变，即将元素替换成组件，即可实现组件的切换动画
+ -->

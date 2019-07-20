@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>4.用js写动画</title>
+    <script src="../package/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <transition
+            name="fade"
+            @before-enter="animBeforeEnter"
+            @enter="animEnter"
+            @after-enter="animAfterEnter"
+        >
+            <p v-show="flag">我的动画效果是用js函数写的</p>
+        </transition>
+        <button @click="anim">点我</button>
+    </div>
+
+    <script>
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                flag: true
+            },
+            methods: {
+                anim() {
+                    this.flag = !this.flag;
+                },
+                // 3个js动画事件都会向其绑定的函数传递一个el参数，表示transition标签包裹的对象节点
+                // 其中，enter事件还会向其绑定的函数传递一个done参数，即在enter绑定的函数中一定要利用done()函数表明该动画何时结束
+                //首先进入动画前，先将el即p元素节点的颜色设置为red
+                animBeforeEnter(el) {
+                    el.style.color = "blue"
+                },
+                //然后进入动画时，延迟5s后，将el颜色设置为yellow，在延迟3s后动画结束
+                animEnter(el, done) {
+                    setTimeout(() => {
+                        el.style.color = "yellow"
+                        console.log("jdhskjdh0")
+                    }, 3000)
+                    setTimeout(() => {
+                        //注意这里的done()函数不要忘了，相当于告诉页面动画效果什么时候结束
+                        console.log("jdhskjdh1")
+                        done()
+                    }, 2000)
+                },
+                //最后动画结束（即done()函数执行）后，将el颜色设置为黑色
+                animAfterEnter(el) {
+                    console.log("jdhskjdh2")
+                    el.style.color = "blue"
+                }
+            }
+        })
+    </script>
+
+</body>
+</html>
+
+<!-- 
+    笔记：
+1、类似css过渡动画，vue的transition动画也为提供了几个js事件，分别是
+   beforeEnter、enter和afterEnter，分别代表进入动画前，执行动画时，执行动画后
+2、所以可以分别监听这三个事件，给这三个事件分别绑定三个函数，编辑在三个阶段的不同
+    效果样式，当到不同阶段事件切换来实现动画效果的转换
+3、这个js动画机制很诡异啊，好像跟视频讲的不太一样，看我写的几个函数的输出顺序好像不是跟视频将的一样呀？？？？
+
+题外话，注意：
+1、组件名的定义时可以用驼峰，但写是在html中以标签的形式引用时一定要用变成小写，且驼峰出用-连接
+2、
+ -->

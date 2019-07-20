@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>条件渲染：v-if & v-show & v-else-if & v-else</title>
+    <script src="../package/vue.js"></script>
+</head>
+<body>
+
+    <div id="app">
+        <!-- 一、v-if和x-show都是可以调节元素标签的显示与否，但两者又有区别，
+            1，v-if是将标签代码删除跟添加来控制，所以有较高的切换消耗
+            2，v-show是给标签元素设置display：none样式来控制显示与否，所以有较高的初始化渲染消耗
+        所以综上，但需要频繁切换元素的显示跟隐藏时用v-show，不用频繁切换时用v-if -->
+        <button @click="flag=!flag">一键切换</button>
+        <p v-if="flag">我是由v-if控制的</p>
+        <p v-show="flag">我是由v-show控制的</p>
+
+        <!-- 二、v-if、v-else-if、v-else 跟其他语言的 if(){}、else if(){}、else{}一样 -->
+        <!-- 注意，< >在html文件中需要用转义符号 -->
+        <p v-if="x >= 0"> 语句一：x &gt;= 0</p>
+        <p v-else-if="x < 0 && x >= -5"> 语句二：x &lt; 0 && x &gt;= -5</p>
+        <p v-else="x < -5"> 语句三：x &lt; -5</p>
+
+    </div>
+
+    <script>
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                flag: false,
+                x: 1,
+            }
+        })
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>2.使用animate.css动画库</title>
+    <script src="../package/vue.js"></script>
+    <link rel="stylesheet" href="../package//animate.css">
+</head>
+<body>
+    <div id="app">
+        <transition
+            appear
+            leave-active-class="animated rollOut"
+            enter-active-class="animated zoomInDown"
+            appear-active-class="animated zoomInDown"
+        >
+            <p v-show="flag">我引入animate.css库实现动画效果</p>
+        </transition>
+        <button @click="change">点我切换</button>
+    </div>
+
+    <script>
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                flag: true
+            },
+            methods: {
+                change() {
+                    this.flag = !this.flag;
+                }
+            }
+        })
+    </script>
+
+</body>
+</html>
+
+<!-- 
+    笔记：
+1、在1.的基础上，使用animate.css动画库实现vue的css过渡动画效果，是1.的进阶版，
+在1.的基础上，引入animate.css就不用自己手动写css样式了，而是直接引用库里边的css样式，
+但需要注意的是，添加样式的类虽然本质上与1.是一样的，但是类名不同
+2、注意使用animate.css库要先引入这个库包，然后在transition这个标签上写上：
+        appear
+        leave-active-class="animated xxx"  这句是离开动画效果
+        enter-active-class="animated xxx"  这句是显示动画效果
+        appear-active-class="animated xxx" 这句是页面刷新的动画效果
+    xxx具体是哪个动画效果可以查看animate.css的官方网站,注意这里是animated（多了个d）
+ -->

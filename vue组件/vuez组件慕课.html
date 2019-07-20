@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vue组件慕课4.1/title>
+    <script src="../package/vue.js"></script>
+</head>
+<body>
+    
+    <div id="app">
+        <p>
+            lsdjflksdjflkdflk
+        </p>
+    </div>
+
+    <script>
+        // 组件
+        // Vue.component("com1", {
+        //     //组件模板
+        //     template: "",
+        //     //data数据，注意组件的data数据是一个函数，且返回一个对象，数据就放在这个返回函数中
+        //     data() {
+        //         return {
+
+        //         }
+        //     },
+        //     methods: {
+
+        //     }
+ 
+        // })
+
+        // vue实例
+        var vm = new Vue({
+            el: "#app",
+            data: {
+
+            },
+            methods: {
+
+            }
+        })
+
+    </script>
+
+</body>
+</html>
+
+
+<!-- 笔记：
+1、组件其实就是一些需要反复用到的代码块模板写在一些，方便反复调用，并将其中的html代码、数据、函数等分离开来
+2、组件的定义书写中，注意data数据是一个函数而不是对象，且要返回一个对象，数据就放在这个返回的对象中
+3、 -->

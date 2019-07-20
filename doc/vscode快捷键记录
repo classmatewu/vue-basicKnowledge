@@ -1,0 +1,8 @@
+快速复制当行到下一行：shift + alt + ↓
+选中单词往后逐个查找该单词（区分大小写）：ctrl + d
+调出界面键盘：shift + ctrl + k
+可以同时选中多个地方，即调出多个定位光标：alt + 鼠标左键点击
+格式化代码快捷键：shift + alt + f
+显示或隐藏左边活动栏：ctrl + b
+如何修改默认浏览器：文件 -> 首选项 -> 设置 -> 在搜索框输入“Open-in-browser: Default” 
+-> 在代码框中输入“{"open-in-browser.default":"chrome"}” -> 保存即可（同时将谷歌设置为电脑默认浏览器）

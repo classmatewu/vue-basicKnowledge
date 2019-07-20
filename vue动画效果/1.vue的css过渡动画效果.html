@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>1.vue的css过渡动画效果</title>
+    <script src="../package/vue.js"></script>
+    <style>
+        /* 设置动画的class样式 */
+        /* 设置显示时第一帧时v-enter类的opacity的值为0，然后
+            第二帧v-enter消失，达到opacity从0-1显示变化 */
+        /* 因为默认一开始opacity=1，所以设置消失时第二帧生成的
+        v-leave-to类的opacity的值为1，达到opacity从1-0隐藏变化 */
+        .fade-enter, .fade-leave-to {
+            opacity: 0;
+        }
+
+        /* 前面样式设置好后，然后由全程都存在的样式v-enter-native和v-leave-active
+            监听opacity值变化，并设置这个变化是事件，以此达到过渡动画的效果 */
+        .fade-enter-active, .fade-leave-active {
+            transition: opacity 3s;
+        } 
+    </style>
+</head>
+<body>
+    <div id="app">
+        <div>
+            <!-- 注意，要实现动画效果的范围应该包裹在vue提供的transition标签里 -->
+            <!-- 这里给transition标签添加name属性，所以class名不再是v-，而是fade- -->
+            <transition name="fade">
+                <p v-show="flag">我有动画效果</p>
+            </transition>
+            <button @click="amin">点击实现隐藏和显示的动画效果</button>
+        </div>
+    </div>
+
+    <script>
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                flag: true
+            },
+            methods: {
+                amin() {
+                    this.flag = !this.flag;
+                }
+            }
+        })
+    </script>
+
+</body>
+</html>
+
+<!-- 
+笔记：
+0、如何实现vue的css过渡动画：
+首先将要实现动画的区域放在vue提供的一个<transition>标签里，同时可以设置名字
+然后对<transition>标签在各帧产生的class进行样式设计实现动画效果
+注意：注意要实现动画的区域本身应该本身就有一个动态切换的过程，再给该动态切换添加效果
+
+1、vue的css过渡动画原理：通过增删css class样式实现过渡动画效果
+    1）动画消失过程中css class情况：
+    第一帧：生成 v-leave  、  生成 v-leave-active
+    第二帧：移除 v-leave  、  生成 v-leave-to
+  最后一帧：移除 v-leave  、  移除 v-leave-active
+    2）动画产生过程中css class情况：
+    第一帧：生成 v-enter  、  生成 v-enter-active
+    第二帧：移除 v-enter  、  生成 v-enter-to
+  最后一帧：移除 v-enter  、  移除 v-enter-active
+
+总结:  v-leave/v-enter 存在于第一二帧
+       v-leave-to/v-enter-to 存在于第二帧到最后一帧
+       v-leave-active/v-enter-active 存在于整个显示/隐藏动画过程中
+
+2、用v-show/v-if控制元素的显示和隐藏切换，在此基础上，给在这个
+    过程中变化的class添加样式，即可实现过渡动画效果
+
+3、这些都是类，所以用户css加样式时类选择器应该用.v-enter-active等，
+别忘了类选择器的.
+
+ -->

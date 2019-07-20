@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vue的样式绑定</title>
+    <script src="../package/vue.js"></script>
+    <style>
+        .classObj {
+            color: #888;
+        }
+        .classArr1 {
+            color: #f11;
+        }
+        .classArr2 {
+            font-size: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <!-- 1.1、通过变量flag1决定.classObj这个类是否存在，当flag=true时类存在，当flag=flase时类不存在 -->
+        <p :class="{classObj: flag1}" @click="changeClassObj">1.1我用:class + {}样式实现了一些效果</p>
+        <!-- 1.2、通过变量classArrName设置类名，但classArrName=""时，则没有类，
+        当classArrName1="classArr1"时，则在该元素上有一个名为.classArr1的类 -->
+        <p :class="[classArrName1, classArrName2]" @click="changeClassArr">1.2我用:class + []样式实现了一些效果</p>
+        <!-- PS:1.1和1.2也可以将对象和数组用变量放然后将对象内容写到vm实例中 -->
+
+        <!-- 推荐2，好记 -->
+        <!-- 2.1、用style + {}，{}可以用变量代替，将{}css样式写在vm实例里 -->
+        <p :style="styleObj" @click="changeStyleObj">2.1我用:style + {}样式实现了一些效果</p>
+        <!-- 2.2、用style + [],可以像2.1那样，但数组里面可以放多个 -->
+        <p :style="[styleArr1, styleArr2]" @click="changeStyleArr">2.2我用:style + []样式实现了一些效果</p>
+    </div>
+
+    <script>
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                flag1: true,
+                classArrName1: "", 
+                classArrName2: "",
+                styleObj: {
+                    color: '#22f'
+                },
+                styleArr1: {
+                    color: "#f11"
+                },
+                styleArr2: {
+                    backgroundColor: "#00f"
+                }
+            },
+            methods: {
+                changeClassObj() {
+                    this.flag1 = !this.flag1;
+                },
+                changeClassArr() {
+                    this.classArrName1 = (this.classArrName1 === "" ? "classArr1" : "");
+                    this.classArrName2 = (this.classArrName2 === "" ? "classArr2" : "");
+                },
+                changeStyleObj() {
+                    this.styleObj.color = (this.styleObj.color === "#22f" ? "#f00" : "#22f");
+                },
+                changeStyleArr() {
+                    this.styleArr2.backgroundColor = (this.styleArr2.backgroundColor === 
+                    "#00f" ? "#0f0" : "#00f")
+                }
+            }
+        })
+    </script>
+</body>
+</html>
+
+<!-- 
+    笔记：
+1、:为v-bind:即属性绑定指令的简写，在vue中用数据绑定则说明=后面的就是一个js表达式，
+eg: :class="{titleClass: flag1}"  因为用了数据绑定，所以=后面的引号是一个js表达式，而不是一个字符串
+2、一般若一个变量有来两种取值情况，非a即b，有两种方法去实现变量x值的取反
+    1）若变量x取的是true和false的布尔类型，则可以写成 x = !x;
+    2）若变量x取的是a和b，x = (x === a ? b : a); 意味当x等于a时，则取b，否则取a
+3、vue的样式绑定有两种方式，1是用class属性，2是用style写内联样式，而这两种又都有用对象和数组的方式
+    1）用class属性：
+        1.1）用{}对象：
+        1.2）用[]数组：
+    2)用style属性：
+        2.1）用{}对象：
+        2.2）用[]数组：
+3、class就是vue提供类名，在html代码中用style写样式，style就是直接将样式写到vm实例中
+    {}就是用于单个类，[]就是用于多个类
+ -->

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>动态组件和v-once指令</title>
+    <script src="../package/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- 利用vue提供的component标签实现动态组件，:is="组件名"，则展示那个组件名 -->
+        <component :is="comName"></component>
+        <button @click="changeCom">按钮</button>
+    </div>
+
+    <script>
+        Vue.component("com1", {
+            // 如果是用动态组件进行组件切换，则在切换过程中会反复地销毁和创建组件，开销比较大，
+            // 若添加了v-once指令，则组件会保留在内存中，所以切换组件造成的开销不会很大
+            template: `
+                <p v-once>我是组件1</p>
+            `,
+            data() {
+                return {
+
+                }
+            },
+            methods: {
+
+            }
+        })
+
+        var com2 = {
+            template: `
+                <p  v-once>我是组件2</p>
+            `,
+            data() {
+                return {
+
+                }
+            },
+            methods: {
+
+            }
+        }
+
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                comName: "com1"
+            },
+            methods: {
+                changeCom() {
+                    this.comName = (this.comName === "com1" ? "com2" : "com1");
+                }
+            },
+            components: {
+                com2
+            }
+        })
+    </script>
+
+</body>
+</html>

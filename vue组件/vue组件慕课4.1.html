@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vue组件</title>
+    <script src="../package/vue.js"></script>
+</head>
+<body>
+    <div id="app1">
+        <table>
+            <tbody>
+                <!-- <tr><td>1</td></tr>
+                <tr><td>2</td></tr>
+                <tr><td>3</td></tr> -->
+
+                <!-- 备注1：像tbody这种元素的直接元素一定是tr，所以这里引入组件得用这种方式引入
+                     select子标签一定是option，ul子标签一定是li一样 -->
+                <tr is="com1"></tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div id="app2">
+        <!-- 为每一个count绑定一个监听inc事件触发的函数，若有触发，则执行一次calResult函数，即去计算result的值 -->
+        <count @inc="calResult" ref="count1"></count>
+        <count @inc="calResult" ref="count2"></count>
+        <div>{{ result }}</div>
+    </div>
+
+    <script>
+        // 表格一行组件
+        Vue.component("com1", {
+            // 备注2：因为template下只能有一个根标签，所以要建3个标签，得用一个div包起来
+            template: `
+                <div>
+                    <tr><td>1</td></tr>
+                    <tr><td>2</td></tr>
+                    <tr><td>3</td></tr>
+                </div>
+            `,
+            
+        });
+
+        // 元素自增1组件
+        Vue.component("count", {
+            template: `
+                <p @click="numInc">{{ num }}</p>
+            `,
+            data() {
+                return {
+                    num: 0
+                }
+            },
+            methods: {
+                numInc() {
+                    this.num++;
+                    // 备注3：this.$emit("inc");意味触发了inc事件，跟点击事件等的本质其实一样，所以需要绑定一个监听函数
+                    this.$emit("inc");
+                }
+            }
+        })
+
+        // vue实例
+        var vm = new Vue({
+            el: "#app1",
+            data: {
+
+            },
+            methods: {
+
+            }
+        })
+
+        var vm = new Vue({
+            el: "#app2",
+            data: {
+                result: 0
+            },
+            methods: {
+                calResult() {
+                    // 备注4：因为已经给两个count组件的ref属性起了名字，所以可以根据其对应的ref属性获取到相应组件的引用，即在html创建的组件，而非获取到模板组件
+                    this.result = this.$refs.count1.num + this.$refs.count2.num;
+                }
+            }
+        })
+    </script>
+</body>
+</html>
+
+<!-- 笔记：
+1、组件其实就是一些需要反复用到的代码块模板写在一些，方便反复调用，并将其中的html代码、数据、函数等分离开来
+2、组件的定义书写中，注意data数据是一个函数而不是对象，且要返回一个对象，数据就放在这个返回的对象中
+3、this.$emit.("change"); //触发一个change事件，这与子组件向父组件传值有关
+4、this.$refs.设置的名称; //获取DOM节点或者组件的引用
+-->

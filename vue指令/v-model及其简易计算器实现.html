@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>v-model及其简易计算器实现</title>
+    <script src="../package/vue.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <!-- 要实现数据从视图层绑定到数据层，就得用v-bind
+        要实现数据从视图层与视觉层的双向绑定，则得用v-model
+        即要改变视图层的表单数据并同步到数据层，就得用v-model -->
+
+        <!-- 属性绑定用v-bind，且v-bind是单向数据绑定，即只能从数据层m到视图层v -->
+        <input type="button" :value="msg">
+
+        <!-- v-model实现数据双向绑定，即能从数据层m到视图层v，也能从视图层v到数据层m -->
+        <!-- 注意v-model的写法，跟v-bind略有不同，不需要写vuale,且v-model只能用于表单元素 -->
+        <input type="text" v-model="msg">
+
+        <br>
+
+        <!-- 简易计算器实现 -->
+        <input type="text" v-model="n1">
+        <select v-model="opt">
+            <option value="+">+</option>
+            <option value="-">-</option>
+            <option value="*">*</option>
+            <option value="/">/</option>
+        </select>
+        <input type="text" v-model="n2">
+        <button @click="cal">=</button>
+        <input type="text" v-model="result">
+
+    </div>
+
+    <script>
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                n1: 0,
+                n2: 0,
+                result: 0,
+                opt: "+"
+                
+            },
+            methods: {
+                cal() {
+                    switch (this.opt) {
+                        // 这里考虑用parseInt将将n1，n2都先转为int型，否则加法时可能会被当成字符串个拼接，其他几个运算就会自动类型转换
+                        case "+": this.result = parseInt(this.n1) + parseInt(this.n2); break;
+                        case "-": this.result = parseInt(this.n1) - parseInt(this.n2); break;
+                        case "*": this.result = parseInt(this.n1) * parseInt(this.n2); break;
+                        case "/": this.result = parseInt(this.n1) / parseInt(this.n2); break;
+                        // 注意：不要忘了在每个语句后面加上break跳出case语句，否则会顺序执行下去
+                        // 这里跟c语言的类型转换还不太一样，结果 = int的n1 / int的n2，结果会得到小数而不是整数，因为js是若语言类型
+                    }
+                }
+            }
+
+        })
+
+    </script>
+</body>
+
+</html>
+
+<!-- others: about jquery's html(),val(),text() 方法
+    .html():获取节点的全部html代码   
+    .text():获取节点的文本，不包括其他html代码   
+    .val():获取节点的value属性值      
+    .attr():获取节点属性值
+
+    $("#app").html("<p>hello<p>");为修改id名为app的节点的html代码为 <p>hello<p></p>
+    $("#app").text("hello");为修改id名为app的节点的文本为hello
+    $(".inner").val("hello");为修改类名为inner的节点的value属性值为hello
+    $("img").attr("width","180");为修改img标签节点的width属性值为180 -->

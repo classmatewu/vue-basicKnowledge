@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Vue插槽（slot）</title>
+    <script src="../package/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <com>
+            <!-- 直接在组件内写的html代码被称为插槽，插槽可以在组件定义的template中的
+            html代码中以<slot></slot>标签引用 -->
+            <p slot="header">我是标题</p>
+            <p slot="footer">我是页脚</p>
+        </com>
+    </div>
+
+    <script>
+        Vue.component("com", {
+            template: `
+                <div>
+                    <slot name="header">若没有name为header的插槽，则会显示这段默认值</slot>
+                    <p>我是内容</p>
+                    <slot name="footer">若没有name为footer的插槽，则会显示这段默认值</slot>
+                </div>
+            `,
+        })
+
+        var vm = new Vue({
+            el: "#app",
+            data: {
+
+            },
+            methods: {
+
+            }
+        })
+    </script>
+</body>
+</html>

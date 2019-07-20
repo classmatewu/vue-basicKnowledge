@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>组件基础</title>
+    <script src="../package/vue.js"></script>
+</head>
+<body>
+
+    <div id="app">
+        <!-- 一、按钮组件 -->
+        <btn-com></btn-com>
+        <btn-com></btn-com>
+        <btn-com></btn-com>
+
+        <!-- 二、博文组件的引用 -->
+        <!-- 1、直接赋值法 -->
+        <blog-post1 title="hello,Vue" content="我是内容哦" id="001" paper-name="bigPaper"></blog-post>
+
+        <!-- 2、数据绑定，调用vue模板的数据层data -->
+        <blog-post1 :title="title" :content="content" :id="id" :paper-name="paperName"></blog-post>
+
+        <!-- 3、调用vue中的data对象中的post对象 -->
+        <!-- <blog-post2 :post2="post2"></blog-post2> -->
+
+    </div>
+
+    <!-- 二、博文组件定义之template定义：将 -->
+    <!-- 1、 -->
+    <template id="blog-post1">
+        <!-- 注意template标签下只能有一个根标签，有多个时应将其他应用一个div容器包起来 -->
+        <div>
+            <h1>我是博文组件的标题部分:{{ title }}</h1>
+            <p>我是博文的内容：{{ content }}</p>
+            <h5>我是博文的id：{{ id }}</h5>
+            <h6>我是博文发表的报社名：{{ paperName }}</h6>
+        </div>
+    </template>
+
+    <!-- 2、 -->
+    <template id="blog-post2">
+            <!-- 注意template标签下只能有一个根标签，有多个时应将其他应用一个div容器包起来 -->
+            <div>
+                <h1>我是博文组件的标题部分:{{ post2.title }}</h1>
+                <p>我是博文的内容：{{ post2.content }}</p>
+                <h5>我是博文的id：{{ post2.id }}</h5>
+                <h6>我是博文发表的报社名：{{ post2.paperName }}</h6>
+            </div>
+        </template>
+
+    <script>
+        // 一、组件的定义:
+            // 利用Vue.component("组件名称", 组件模板)
+            // 即可以理解为，两个参数分别是组件头和组件体
+        // 注意：
+            //  1，data是一个函数，且数据放在return的对象中
+            //  2，template是组件的模板，存放且转义html代码
+        Vue.component("btnCom", {
+            //数据
+            // data是一个函数,而且数据放在return的对象中，类似js闭包？？
+            data() {
+                return {
+                    count: 0
+                }
+            },
+            // html代码
+            // template是一个字符串，存放html代码，且可以转义html代码
+            template: "<button @click='count++'>我是按钮组件,你点了我{{ count }}次</button>"
+        });
+
+        // 二、利用props数组进行组件的传参，实现数据从视图层到数据层
+        // 利用组件传参，各个组件可以传入自己的内容，而不是写死在组件中
+        // 1，传入普通数据参数：
+        Vue.component("blog-post1", {
+            data() {
+                return {
+                    title: "hello,Vue",
+                    content: "我是内容哦",
+                    id: 001,
+                    paperName: "bigPaper"
+                }
+            },
+            // 注意props里的变量需要用引号
+            props: ["title", "content", "id", "paperName"],
+            template: "#blog-post1"
+        });
+
+        // 2、传入对象为参数，即将1的数据包装成一个对象参数
+        Vue.component("blog-post2", {
+            data() {
+                return {
+                    post2: {
+                        title: "hello,Vue",
+                        content: "我是内容哦",
+                        id: 001,
+                        paperName: "bigPaper"
+                }
+                }
+            },
+            // 注意props里的参数名需要用引号，老是要忘记
+            props: ["post2"],
+            template: "#blog-post2"
+        });
+
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                
+            },
+            methods: {
+
+            }
+        })
+
+    </script>
+
+</body>
+</html>
+
+
+<!-- 正确定义vue组件的话，则组件具有独立性，重复性等特点，组件又分全局组件和局部组件 -->

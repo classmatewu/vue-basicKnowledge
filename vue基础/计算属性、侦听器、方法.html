@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>computer计算属性、watch侦听器、methods方法</title>
+    <script src="../package/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <p>{{ fullName() }}</p>
+    </div>
+    <script>
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                firstName: "lebulan",
+                lastName: "james",
+                // fullName: "lebulan james"
+            },
+            // 一、这是用computed方式实现fullName计算
+            // computed: {
+            //     fullName() {
+            //         return (this.firstName + " " + this.lastName);
+            //     }
+            // }
+
+            // 二、这是用watch方法实现fullName计算,fullName在data里已经有了，如果侦听的值不改变，则不会调用这里的函数
+            // watch: {
+            //     // 意味侦听firstName变量，若发生变化，则会执行该函数
+            //     firstName() {
+            //         this.fullName = this.firstName + " " + this.lastName;
+            //     },
+            //     // 意味侦听lastName变量，若发生变化，则会执行该函数
+            //     lastName() {
+            //         this.fullName = this.firstName + " " + this.lastName;
+            //     }
+            // }
+
+            // 三、这是用methods方法实现，注意fullName是一个函数，且也要return接受一下结果值，
+            // 调用时得用fullName()
+            methods: {
+                fullName() {
+                    return(this.firstName + " " + this.lastName);
+                }
+            }
+        })
+    </script>
+</body>
+</html>
+
+<!-- 
+    笔记：
+1、computed、watch、methods3者的用途个不相同(注意是computed而不是computer！)：
+    1）methods较多地用于业务逻辑的处理，编写函数
+    2）computed性能较高，一般用于数据属性的计算，且如果用于计算的值没被修改过，则会保存在内存中，下次再用它，
+    所以说它性能较高，除非用于计算的值有发生改变需要才重新计算外
+    3）watch意味侦听器，即侦听数据的变化，再进行一些操作，一般用于路由地址的侦听，性能也较高，也可理解为computer
+    和methods的结合体
+2、computed和methods一样也是一个对象，但computed把要计算的那个数据属性当成一个函数，并且需要return返回结果，
+但是注意，在computed的数据属性不要把它当成函数，它是也是一个普通的数据属性，所以在调用时不要加(),而是当成属性
+3、watch也是和computed一样是一个对象，且和computed类似，把数据属性当成函数，但调用时却不能加(),而是当成属性
+调用，不同的是watch得是得侦听每个数据，且不用return放回执行结果
+4、methods熟悉，就是往里写函数，但是它的性能不如computed和watch，注意fullName是一个函数，且也要return
+接受一下结果值，调用时得用fullName()
+ -->

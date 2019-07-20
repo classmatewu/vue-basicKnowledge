@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>父子组件的相互传值</title>
+    <script src="../package/vue.js"></script>
+</head>
+<body>
+    
+    <div id="app">
+        <input type="text" v-model="li">
+        <button @click="addList">点击添加到lis中</button>
+        <ul>
+            <li is="li-com"
+                :content="x"
+                :index="index"
+                v-for="(x, index) in lis"
+                @delete="deleteLi">
+            </li>
+        </ul>
+    </div>
+
+    <script>
+        // 全局组件组件
+        Vue.component("li-com", {
+            template: `<li @click="deleteCon">{{ content }}</li>`,
+            data() {
+                return {
+
+                }
+            },
+            // props数组用于接收父组件向子组件传递的参数
+            props: ["content", "index"],
+            methods: {
+                // 删除content的事件
+                deleteCon() {
+                    // 点击触发事件时将该元素的下标传给父组件，进而父组件传给vue实例，对vue实例中的lis在、数组进行修改
+                    this.$emit("delete", this.index);
+                    // alert(this.index);
+                }
+            }
+        })
+
+        // vue实例
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                li: "",
+                lis: ["dksjflkdjf"]
+            },
+            methods: {
+                // 当点击按钮时将输入框的li元素添加到lis数组中
+                addList() {
+                    this.lis.push(this.li);
+                },
+                // 删除li元素的事件，参数index是子组件向父组件传递的参数 
+                deleteLi(index) {
+                    // alert(this.index);
+                    this.lis.splice(index, 1); //表示从index下标开始删除1个元素，即将index元素删除掉
+                }
+            }
+        })
+    </script>
+
+</body>
+</html>
+
+<!-- 笔记：
+视图层与数据层之间的传参：
+1、视图层向数据层传参是用v-model指令，且v-model只能用于表单元素，这种传参是双向的
+2、数据层向视图层传参是通过：进行属性绑定，这种传参是单向的 
+
+子组件与父组件之间的传参
+1、父组件向下给子组件传参是利用在子组件中定义props数组进行接收，当父组件利用数据绑定一个变量，
+并将该变量传给子组件，子组件用props数组进行接收，即设置相同的传参名字
+2、子组件向上向父组件传递参数相对复杂一些，首先子组件先利用this.$emit("时间名"， 某个变量名/变量值);
+设置一个触发事件，然后父组件设置一个监听该时间触发的监听器@，然后再监听器上绑定某个触发事件
+
+总结：父组件通过props向下向子组件传值，子组件通过时间触发来向父组件传值
+
+注意：
+1、组件的定义参数有组件名即组件头，还有组件体两部分组成，
+组件分全局组件和局部组件，全局组件即在vue实例中定义，局部组件即在vue实例中定义，
+全局组件用Vue.component("组件名"， 组件体对象);定义
+局部组件即将组件体对象在全局定义，然后将组件头的定义放在某个vue实例中的components对象中定义
+2、组件其实本质与vue实例是同一回事，所以语法用法大多也类似，所以组件中，在template模板中的
+html代码中要引用组件中data函数中的变量时用插值表达式引用，在组件中的其他地方引用用this.引用
+3、注意在vue实例中其他对象中引用data对象的数据时应用this.调用
+4、单父组件向子组件传值，即子组件利用props数组接收父组件的值时，子组件中不能修改该值，
+如果要修改，只能在data函数中复制一份，再修改运用复制的这一份数据
+-->

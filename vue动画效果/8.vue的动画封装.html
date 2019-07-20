@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>8.vue的动画封装</title>
+    <script src="../package/vue.js"></script>
+    <!-- transition的css过渡动画效果 -->
+    <!-- <style>
+        .v-enter, .v-leave-to {
+            opacity: 0;
+        }
+        .v-enter-active, .v-leave-active {
+            transition: opacity 3s;
+        }
+    </style> -->
+</head>
+
+<body>
+    <div id="app">
+        <!-- 注意别忘了驼峰命名的组件名以标签形式写在html时，要将驼峰改成小写并用-连接 -->
+        <anim-com>
+            <p v-show="flag">我是一个向插槽传入p标签的组件</p>
+        </anim-com>
+        <anim-com>
+            <h1 v-show="flag">我是一个向插槽传入h1标签的组件</h1>
+        </anim-com>
+        <button @click="anim">点我</button>
+    </div>
+
+    <script>
+        // 组件
+        Vue.component("animCom", {
+            template: `
+                <transition
+                    @beforeEnter="animBeforeEnter"
+                    @enter="animEnter"
+                    
+                >
+                    <slot></slot>
+                </transition>
+            `,
+            data() {
+                return {
+
+                }
+            },
+            methods: {
+                animBeforeEnter(el) {
+                    el.style.color = "blue"
+                    console.log("kjsdhkjf1");
+                },
+                animEnter(el, done) {
+                    setTimeout(() => {
+                        el.style.color = "yellow"
+                        done()
+                    }, 3000)
+                    console.log("kjsdhkjf2");
+                },
+                // animAfterEnter(el) {
+                //     el.style.color = "red"
+                //     console.log("kjsdhkjf3");
+                // }
+            }
+        })
+        // vue实例
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                flag: true
+            },
+            methods: {
+                anim() {
+                    this.flag = !this.flag;
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
+
+<!-- 
+    笔记：
+1、动画封装即将动画效果封装成一个插槽组件，即每次使用就可以传入某个
+    DOM元素就可以让它具有这个动画效果
+2、一开始组件元素的动画效果是以style形式写在组价外面的，我们也可以将动画效果也封装到组件中，
+所以我们在组件中用js动画效果(这种方式比较推荐，但是视频里的关于js动画的几个函数好像是讲错了，我也不太理解)
+ -->

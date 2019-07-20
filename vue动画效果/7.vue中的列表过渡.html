@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vue中的列表过渡</title>
+    <script src="../package/vue.js"></script>
+    <style>
+        .fade-enter, .fade-leave-to {
+            opacity: 0;
+        }
+        .fade-enter-active, .fade-leave-active {
+            transition: opacity 3s;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <ul>
+            <transition-group name="fade">
+                <!-- 一般我们都要给循环的对象的每个元素设置一个key值，key值既要每次都
+                具有唯一性即不能重复，但一般不用index即下标作为key值 -->
+                <li v-for="x in lis" key="x">{{ x }}</li>
+            </transition>
+        </ul>
+        <button @click="addLi">点击添加</button>
+    </div>
+
+    <script>
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                count: 0,
+                lis: []
+            },
+            methods: {
+                addLi() {
+                    this.lis.push(this.count++);
+                }
+            }
+        })
+    </script>
+</body>
+</html>
+
+<!-- 
+    笔记：
+1、本节重点：即如何在一个写了v-for即循环指令的元素上，给每个循环产生的元素都作用在
+一个transition标签里，即让循环产生的每一项都有能有动画效果
+2、所以vue给写了v-for的元素提供了一个transition标签的升级版——transition-gruop标签，
+使得等价于每个子元素都被一个transition标签所包裹
+ -->

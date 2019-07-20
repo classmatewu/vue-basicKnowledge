@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>vue的set的方法</title>
+    <script src="../package/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <p v-for="(item, key, index) in jamesInfo">
+            {{ index }} --- {{ key }} --- {{ item }}
+        </p>
+        <p v-for="item in array">{{ item }}</p>
+    </div>
+
+    <script>
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                jamesInfo: {
+                    id: 23,
+                    team: "Lakers",
+                    city: "Los Angeles"
+                },
+                array: [1, 2, 3, 4]
+            }
+        })
+    </script>
+</body>
+</html>
+
+<!-- 
+    笔记：
+1、Vue提供了一个set方法，调用这个set的有两种方式
+    1）Vue.set()
+    2）vm.$set()
+2、set()方法的用途：
+    1）作用于数据对象上：
+        Vue.set(vm.jamesInfo, "age", 37); 意味向vm实例中的jamesInfo数据对象添加一项键为age，键值为37的一项
+    2）作用于数组上：
+        Vue.set(vm.array, 1 ,10); 意味将array数组中下标为1的值变为10
+ -->

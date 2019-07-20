@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>计算属性component的getter和setter</title>
+    <script src="../package/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <p>{{ fullName }}</p>
+    </div>
+
+    <script>
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                firstName: "lebulan",
+                lastName: "james",
+            },
+            methods: {
+
+            },
+            computed: {
+                // 一、这是原来的不用getter和setter的方式
+                // fullName() {
+                //     return(this.firstName + " " + this.lastName);
+                // }
+                // 二、用get和set的方式，其实本质一样，get和set是函数,且被包裹在fullName对象里，
+                // 且也需要return返回值
+                // 当修改fullName值时调用set传参进行修改，因为修改了值，所以访问时得调用get重新计算fullName的值
+                fullName: {
+                    get() {
+                        return(this.firstName + " " + this.lastName);
+                    },
+                    //value即新传入的fullName的值
+                    set(value) {
+                        console.log(value);
+                        var arr = value.split(" "); // 即以空格为划分，将value划分为数组
+                        console.log(arr);
+                        this.firstName = arr[0];
+                        console.log(this.firstName);
+                        this.lastName = arr[1];
+                        console.log(this.lastName);
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+</html>
+
+<!-- 
+    笔记：
+1、
+ -->

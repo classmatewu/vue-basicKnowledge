@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=1, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>给组件绑定原生事件</title>
+    <script src="../package/vue.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- 1、给组件绑定原生事件，调用vue实例里的isClick函数 -->
+        <!-- <com1 @click.native="isClick"></com1> -->
+
+        <!-- 2、绑定自定义事件，调用vue实例里自定义的函数，但需要由子组件传参过来,
+            在子组件的template的html代码中给元素绑定原生事件，借助this.$emit();触发组件的自定义事件 -->
+        <com1 @change="isClick"></com1>
+
+        <!-- 总结：2直接简写为1，这样给组件绑定原生事件就变得非常简单了 -->
+
+    </div>
+
+    <script>
+        // 全局组件
+        Vue.component("com1", {
+            template: `<button @click="change">按钮</button>`,
+            data() {
+                return {
+
+                }
+            },
+            methods: {
+                isClick() {
+                    alert("hello,我在组件里！");
+                },
+                change() {
+                    alert("我是由template里的html代码触发的原生事件");
+                    this.$emit("change");
+                }
+            }
+        })
+
+        // vue实例
+        var vm = new Vue({
+            el: "#app",
+            data: {
+
+            },
+            methods: {
+                isClick() {
+                    alert("hello,我在vue实例里！");
+                }
+            }
+        })
+    </script>
+    
+</body>
+</html>
+
+<!-- 
+笔记：
+1、先解释下给组件绑定原生事件是什么意思，原生即vue提供的，而非自定义的，原生与自定义事件相对
+    注意，给组件标签绑定的时间全部都是自定义标签，即在组件标签上 @事件名 的事件是在组件上通过
+    this.$emit("事件名"，其他变量名/变量值)；
+2、而要在组件上绑定原生事件有两种：
+    1)是将@click等事件绑定写在组件定义的template的html代码上，但这样绑定的原生事件是在组件内的
+    即@click=的函数定义在组件的methods里
+    2)是将@click.native等事件绑定在组件标签里，注意这里多了个.native才表示绑定的是原生事件，区别于组件上的自定义事件
+    但这种绑定与1不同，@click.native=的函数是定义在vue实例里的methods对象中的，
+    2)才叫给组件绑定原生事件 
+-->

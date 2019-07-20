@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>3.1.和2.的结合使用</title>
+    <script src="../package/vue.js"></script>
+    <link rel="stylesheet" href="../package/animate.css">
+    <style>
+        .fade-enter, .fade-leave-to {
+            opacity: 0;
+        }
+        .fade-enter-active, .fade-leave-active {
+            transition: opacity 5s;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <transition
+            name="fade"
+            :duration="{enter: 10000, leave: 5000}"
+            leave-active-class="animated shake fade-leave-active"
+            enter-active-class="animated swing fade-enter-active"
+            appear
+            appear-active-class="animated zoomInDown "
+        >
+            <p v-show="flag">我引入animate.css库实现动画效果</p>
+        </transition>
+        <button @click="change">点我切换</button>
+    </div>
+
+    <script>
+        var vm = new Vue({
+            el: "#app",
+            data: {
+                flag: true
+            },
+            methods: {
+                change() {
+                    this.flag = !this.flag;
+                }
+            }
+        })
+    </script>
+
+</body>
+</html>
+
+<!-- 
+    笔记：
+1、1.是用transition方式，手动给各帧的class设置样式的来实现字体深浅的变化效果
+    2.的方式是引入animate.css库的方法设置抖动等酷炫的动画效果
+利用1.和2.的结合方式可以实现，既有抖动等酷炫的类库动画效果，又有手动设置的transition样式深浅变化效果
+2、 leave-active-class="animated shake fade-leave-active"
+    enter-active-class="animated swing fade-enter-active"
+设置好的transition样式必须添加到leave-active-class=""/enter-active-class=""中
+3、动画效果时长问题：由于transition方式 跟 引入animate.css库两种方法的时长经常不一样
+    1）使用type="transition" 表明使用transition方式时长作为动画效果的总时长
+    2）使用:duration可以自定义时长：
+            :duration="10000" 表示整个动画效果为10000毫秒，即10秒
+            :duration="{enter: 5000, leave: 10000}" 表示显示动画时长为5s，消失动画效果为10s
+ -->

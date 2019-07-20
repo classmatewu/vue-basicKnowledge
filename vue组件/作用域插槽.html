@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>作用域插槽</title>
+    <script src="../package/vue.js"></script>
+    <!-- 作用域插槽与插槽不同，插槽是将template中部分指定的html代码直接写在组件标签内，
+    而作用域插槽则是利用组件的<template></template>标签，向组件中的template传递
+    某个标签，注意作用域插槽的写法比插槽略微复杂一点 -->
+</head>
+<body>
+    <div id="app">
+        <com>
+            <template slot-scope="props">
+                <li>{{ props.num }}</li>
+            </template>
+        </com>
+    </div>
+
+    <script>
+        Vue.component("com", {
+            template: `
+                <div>
+                    // 这里用作用域插槽将slot替换成想展示的样式，例如li标签等,运行后变为<li>{{ num }}</li>
+                    <slot :num="num">
+                        {{ num }}
+                    </slot>
+                </div>
+            `,
+            data() {
+                return {
+                    num: 1
+                }
+            }
+        })
+
+        var vm = new Vue({
+            el: "#app",
+            data: {
+
+            },
+            methods: {
+
+            }
+        })
+    </script>
+
+</body>
+</html>

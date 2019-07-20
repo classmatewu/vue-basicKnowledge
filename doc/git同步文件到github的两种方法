@@ -1,0 +1,21 @@
+git同步文件到github的两种方法：
+（一）先在github上创建一个仓库 -> clone到本地 -> add到缓冲区 -> commit本地仓库 -> push
+1、在github上创建一个仓库，并复制该项目路径
+2、定位到指定的本地文件夹，并右键用git bash打开
+3、使用git命令：$ git clone github仓库地址   将github仓库克隆到刚才git bash的文件夹下
+4、使用git命令：$ git cd github仓库名    进入该本地文件夹
+5、使用git命令：$ git add 文件名/ .   将指定文件/当前文件夹的所有文件同步到本地缓冲区
+6、待要同步的文件都add到缓冲区后，使用git命令：$ git commit -m "提交信息"   将缓冲区的全部文件同步到本地仓库
+7、使用git命令：$ git push -u origin master  将本地仓库同步到刚才地址所指定的github仓库（主分支master）
+
+（二）init一个本地仓库 -> add缓冲区 -> commit本地仓库 -> 在github上创建一个仓库 -> remote连接 -> push
+1、定位到指定的本地文件夹，并右键用git bash打开
+2、使用git命令：$ git init 本地仓库名    在指定文件夹下创建一个本地仓库
+3、使用git命令：$ git cd 本地仓库名    进入该本地文件夹
+4、使用git命令：$ git add 文件名或 .   将指定文件/当前文件夹的所有文件同步到本地缓冲区
+5、待要同步的文件都add到缓冲区后，使用git命令：$ git commit -m "提交信息"   将缓冲区的全部文件同步到本地仓库
+6、在github上创建一个仓库，并复制该项目路径
+7、使用git命令：$ git remote add origin github仓库地址   将本地仓库连接github仓库
+8、使用git命令：$ git push -u origin master  将本地仓库同步到刚才地址所指定的github仓库（主分支master）
+
+注意：所有的git命令前都有 $ git ，不要忘记加git
